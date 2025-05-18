@@ -2,6 +2,7 @@ import pygame
 from constants import *
 from player import Player
 
+
 x = SCREEN_WIDTH / 2
 y = SCREEN_HEIGHT / 2
 player = Player(x, y)
@@ -29,6 +30,7 @@ def main():
 
         # display fps every second
         fps_display_timer += dt
+        print(fps_display_timer)
         if fps_display_timer >= 1.0:
             print(f"fps: {clock.get_fps()}")
             fps_display_timer = 0
