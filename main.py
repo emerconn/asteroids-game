@@ -1,5 +1,11 @@
 import pygame
 from constants import *
+from player import Player
+
+
+x = SCREEN_WIDTH / 2
+y = SCREEN_HEIGHT / 2
+player = Player(x, y)
 
 
 def main():
@@ -20,14 +26,16 @@ def main():
                 return
 
         screen.fill("black")  # fill entire screen black
-        pygame.display.flip()  # update contents of entire screen
-
         clock.tick(fps)
         dt /= 1000
         counter += 1
         if counter == fps:
             print(f"fps: {clock.get_fps()}")
             counter = 0
+
+        player.draw(screen)
+
+        pygame.display.flip()  # update contents of entire screen
 
 
 if __name__ == "__main__":
