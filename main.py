@@ -2,7 +2,6 @@ import pygame
 from constants import *
 from player import Player
 
-
 x = SCREEN_WIDTH / 2
 y = SCREEN_HEIGHT / 2
 player = Player(x, y)
@@ -16,9 +15,9 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-    fps = 60
-    counter = 0
     dt = 0
+    fps = 165
+    fps_display_timer = 0
 
     while True:
         for event in pygame.event.get():
@@ -26,14 +25,16 @@ def main():
                 return
 
         screen.fill("black")  # fill entire screen black
-        clock.tick(fps)
-        dt /= 1000
-        counter += 1
-        if counter == fps:
+        dt = clock.tick(fps) / 1000  # get delta time in float seconds
+
+        # display fps every second
+        fps_display_timer += dt
+        if fps_display_timer >= 1.0:
             print(f"fps: {clock.get_fps()}")
-            counter = 0
+            fps_display_timer = 0
 
         player.draw(screen)
+        player.update(dt)
 
         pygame.display.flip()  # update contents of entire screen
 
