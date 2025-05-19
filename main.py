@@ -3,6 +3,12 @@ from constants import *
 from player import Player
 
 
+# groups
+updatables = pygame.sprite.Group()
+drawables = pygame.sprite.Group()
+
+# sprites
+Player.containers = (updatables, drawables)
 x = SCREEN_WIDTH / 2
 y = SCREEN_HEIGHT / 2
 player = Player(x, y)
@@ -28,15 +34,17 @@ def main():
         screen.fill("black")  # fill entire screen black
         dt = clock.tick(fps) / 1000  # get delta time in float seconds
 
-        # display fps every second
+        # print fps every second
         fps_display_timer += dt
-        print(fps_display_timer)
         if fps_display_timer >= 1.0:
-            print(f"fps: {clock.get_fps()}")
+            print(f"fps: {round(clock.get_fps())}")
             fps_display_timer = 0
 
         player.draw(screen)
-        player.update(dt)
+        for drawable in drawables:
+            drawable.draw(screen)
+
+        updatables.update(dt)
 
         pygame.display.flip()  # update contents of entire screen
 
