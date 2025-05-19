@@ -40,11 +40,11 @@ def main():
             print(f"fps: {round(clock.get_fps())}")
             fps_display_timer = 0
 
-        player.draw(screen)
+        # draw all sprites
         for drawable in drawables:
             drawable.draw(screen)
 
-        updatables.update(dt)
+        updatables.update(dt)  # update all sprits
 
         pygame.display.flip()  # update contents of entire screen
 
