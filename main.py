@@ -6,25 +6,30 @@ from sprites.asteroidfield import AsteroidField
 from sprites.shot import Shot
 
 
-# sprite groups
-updatables = pygame.sprite.Group()
-drawables = pygame.sprite.Group()
-asteroids = pygame.sprite.Group()
-shots = pygame.sprite.Group()
+def create_sprite_groups():
+    updatables = pygame.sprite.Group()
+    drawables = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
+    return updatables, drawables, asteroids, shots
 
-# player sprite
-Player.containers = (updatables, drawables)
-x = SCREEN_WIDTH / 2
-y = SCREEN_HEIGHT / 2
-player = Player(x, y)
 
-# asteroid sprites
-Asteroid.containers = (asteroids, updatables, drawables)
-AsteroidField.containers = updatables
-asteroid_field = AsteroidField()
+def create_sprites(updatables, drawables, asteroids, shots):
+    # player
+    Player.containers = (updatables, drawables)
+    x = SCREEN_WIDTH / 2
+    y = SCREEN_HEIGHT / 2
+    player = Player(x, y)
 
-# shot sprites
-Shot.containers = (shots, updatables, drawables)
+    # asteroids
+    Asteroid.containers = (asteroids, updatables, drawables)
+    AsteroidField.containers = updatables
+    asteroid_field = AsteroidField()  # must be declared
+
+    # shots
+    Shot.containers = (shots, updatables, drawables)
+
+    return player
 
 
 def fps_print(fps_display_timer, dt, clock):
@@ -37,12 +42,14 @@ def fps_print(fps_display_timer, dt, clock):
         return fps_display_timer
 
 
-def main():
-    fps = SCREEN_FPS
-    fps_display_timer = 0
-    dt = 0
-    game_over = False
+def handle_events():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+    return True
 
+
+def main():
     print(f"Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
@@ -50,25 +57,27 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
+    fps = SCREEN_FPS
+    fps_display_timer = 0
 
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return
+    updatables, drawables, asteroids, shots = create_sprite_groups()
+    player = create_sprites(updatables, drawables, asteroids, shots)
 
-        screen.fill("black")  # fill entire screen black
-        dt = clock.tick(fps) / 1000  # get delta time in float seconds
+    running = True
+    while running:
+        running = handle_events()
 
-        # print fps every second
+        screen.fill("black")
+        dt = clock.tick(fps) / 1000  # delta time in float seconds
+
         fps_display_timer = fps_print(fps_display_timer, dt, clock)
 
-        # draw all sprites
         for drawable in drawables:
             drawable.draw(screen)
 
-        updatables.update(dt)  # update all sprits
+        updatables.update(dt)
 
-        # check for asteroid collisions
+        # asteroid collisions
         for asteroid in asteroids:
             if asteroid.collision(player):
                 player.kill()
@@ -79,8 +88,7 @@ def main():
                     asteroid.split()
 
         player.shoot_timer(dt)  # constantly reduce shoot timer
-
-        pygame.display.flip()  # update contents of entire screen
+        pygame.display.flip()  # update screen contents
 
 
 if __name__ == "__main__":
