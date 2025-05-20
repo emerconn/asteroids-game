@@ -1,9 +1,9 @@
 import pygame
 from constants import *
-from player import Player
-from asteroid import Asteroid
-from asteroidfield import AsteroidField
-from shot import Shot
+from sprites.player import Player
+from sprites.asteroid import Asteroid
+from sprites.asteroidfield import AsteroidField
+from sprites.shot import Shot
 
 
 # sprite groups
