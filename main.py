@@ -32,14 +32,14 @@ def create_sprites(updatables, drawables, asteroids, shots):
     return player
 
 
-def fps_print(fps_display_timer, dt, clock):
-    if fps_display_timer >= 1.0:
+def fps_print(fps_print_timer, dt, clock):
+    if fps_print_timer >= 1.0:
         print(f"fps: {round(clock.get_fps())}")
-        fps_display_timer = 0
-        return fps_display_timer
+        fps_print_timer = 0
+        return fps_print_timer
     else:
-        fps_display_timer += dt
-        return fps_display_timer
+        fps_print_timer += dt
+        return fps_print_timer
 
 
 def handle_events():
@@ -58,7 +58,7 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     fps = SCREEN_FPS
-    fps_display_timer = 0
+    fps_print_timer = 0
 
     updatables, drawables, asteroids, shots = create_sprite_groups()
     player = create_sprites(updatables, drawables, asteroids, shots)
@@ -70,7 +70,7 @@ def main():
         screen.fill("black")
         dt = clock.tick(fps) / 1000  # delta time in float seconds
 
-        fps_display_timer = fps_print(fps_display_timer, dt, clock)
+        fps_print_timer = fps_print(fps_print_timer, dt, clock)
 
         for drawable in drawables:
             drawable.draw(screen)
