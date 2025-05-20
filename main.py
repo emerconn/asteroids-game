@@ -28,6 +28,10 @@ Shot.containers = (shots, updatables, drawables)
 
 
 def main():
+    fps = SCREEN_FPS
+    fps_display_timer = 0
+    dt = 0
+
     print(f"Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
@@ -35,9 +39,6 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-    dt = 0
-    fps = 165
-    fps_display_timer = 0
 
     while True:
         for event in pygame.event.get():
@@ -61,7 +62,8 @@ def main():
 
         # check for asteroid collisions
         for asteroid in asteroids:
-            asteroid.collision(player)
+            if asteroid.collision(player):
+                player.kill()
 
             for shot in shots:
                 if asteroid.collision(shot):
