@@ -26,6 +26,7 @@ asteroid_field = AsteroidField()
 # shot sprites
 Shot.containers = (shots, updatables, drawables)
 
+
 def main():
     print(f"Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
@@ -58,9 +59,16 @@ def main():
 
         updatables.update(dt)  # update all sprits
 
-        # check for asteroid collision with player
+        # check for asteroid collisions
         for asteroid in asteroids:
             asteroid.collision(player)
+
+            for shot in shots:
+                if asteroid.collision(shot):
+                    shot.kill()
+                    asteroid.split()
+
+        player.shoot_timer(dt)  # constantly reduce shoot timer
 
         pygame.display.flip()  # update contents of entire screen
 
