@@ -54,6 +54,10 @@ def main():
 
         updatables.update(dt)  # update all sprits
 
+        # check for asteroid collision with player
+        for asteroid in asteroids:
+            asteroid.collision(player)
+
         pygame.display.flip()  # update contents of entire screen
 
 
