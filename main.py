@@ -27,7 +27,7 @@ asteroid_field = AsteroidField()
 Shot.containers = (shots, updatables, drawables)
 
 
-def fps_display(fps_display_timer, dt, clock):
+def fps_print(fps_display_timer, dt, clock):
     if fps_display_timer >= 1.0:
         print(f"fps: {round(clock.get_fps())}")
         fps_display_timer = 0
@@ -60,7 +60,7 @@ def main():
         dt = clock.tick(fps) / 1000  # get delta time in float seconds
 
         # print fps every second
-        fps_display_timer = fps_display(fps_display_timer, dt, clock)
+        fps_display_timer = fps_print(fps_display_timer, dt, clock)
 
         # draw all sprites
         for drawable in drawables:
